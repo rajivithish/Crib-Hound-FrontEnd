@@ -47,18 +47,18 @@ class CribListTable extends Component {
     };
 
     deleteItem = (id) => {
-        this.setState({ loading: true }, () => {
-            Axios.get("https://jsonplaceholder.typicode.com/posts")
-                .then((res) => {
-                    Toast("delete", "Deleted");
-                    this.props.deleteItemFromState(id);
-                    this.setState({ loading: false });
-                    this.toggle();
-                })
-                .catch((err) => {
-                    Toast("error", "Something Went Wrong");
-                });
-        });
+        this.setState({ loading: true });
+        Axios.delete(`http://localhost:8080/api/cribs/${id}`)
+            .then((res) => {
+                Toast("delete", "Deleted");
+                this.props.deleteItemFromState(id);
+                this.setState({ loading: false });
+                this.toggle();
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                Toast("error", "Something Went Wrong");
+            })
     };
 
     componentWillUnmount() {
@@ -70,7 +70,7 @@ class CribListTable extends Component {
     render() {
         const { loading } = this.state;
         const closeBtn = (<button className="close outline-none" onClick={this.toggle}> &times;</button>);
-        const items = this.props.items
+        const items = this.props.items.length ? this.props.items
             .filter((item) => {
                 if (this.state.search == null) return item;
                 else if (
@@ -112,7 +112,7 @@ class CribListTable extends Component {
                         </td>
                     </tr>
                 );
-            });
+            }) : [];
 
         return (
             <Fragment>

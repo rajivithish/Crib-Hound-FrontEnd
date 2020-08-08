@@ -28,22 +28,23 @@ class UpsertCribForm extends Component {
         e.preventDefault();
         this.setState({ loading: true });
         if (this.validateForm()) {
-            Axios.get('https://jsonplaceholder.typicode.com/posts')
-                .then(res => {
-                    const newData = {
-                        id: Date.now(),
-                        img: this.state.img,
-                        name: this.state.name,
-                        location: this.state.location,
-                    }
+            Axios.post('http://localhost:8080/api/cribs', {
+                img: this.state.img,
+                name: this.state.name,
+                location: this.state.location,
+            }).then(res => {
+                if (Object.keys(res.data).length) {
                     Toast('success', 'Added');
-                    this.props.addItemToState(newData, false)
+                    this.props.addItemToState(res.data, false)
                     this.props.toggle();
-                    this.setState({ loading: false })
-                })
-                .catch(err => {
-                    Toast('error', 'Something Went Wrong');
-                })
+                    this.setState({ loading: false });
+                } else {
+                    this.setState({ loading: false });
+                }
+            }).catch(err => {
+                this.setState({ loading: false })
+                Toast('error', 'Something Went Wrong');
+            })
         } else {
             this.setState({ loading: false })
         }
@@ -51,29 +52,28 @@ class UpsertCribForm extends Component {
 
     submitFormEdit = e => {
         e.preventDefault();
-        this.setState({ loading: true }, () => {
-            if (this.validateForm()) {
-                Axios.get('https://jsonplaceholder.typicode.com/posts')
-                    .then(res => {
-                        const newData = {
-                            id: this.state.id,
-                            img: this.state.img,
-                            name: this.state.name,
-                            location: this.state.location,
-                        }
-                        Toast('success', 'Updated');
-                        this.props.updateState(newData);
-                        this.props.toggle();
-                        this.setState({ loading: false });
-                    })
-                    .catch(err => {
-                        Toast('error', 'Something Went Wrong');
-                    })
-            } else {
-                this.setState({ loading: false })
-            }
-        })
-
+        this.setState({ loading: true });
+        if (this.validateForm()) {
+            Axios.put(`http://localhost:8080/api/cribs/${this.state.id}`, {
+                img: this.state.img,
+                name: this.state.name,
+                location: this.state.location,
+            }).then(res => {
+                if (Object.keys(res.data).length) {
+                    Toast('success', 'Updated');
+                    this.props.updateState(res.data, false);
+                    this.props.toggle();
+                    this.setState({ loading: false });
+                } else {
+                    this.setState({ loading: false });
+                }
+            }).catch(err => {
+                this.setState({ loading: false });
+                Toast('error', 'Something Went Wrong');
+            })
+        } else {
+            this.setState({ loading: false })
+        }
     }
 
     validateForm() {
