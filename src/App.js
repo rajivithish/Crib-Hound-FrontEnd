@@ -22,12 +22,7 @@ class App extends Component {
 
   getItems() {
     this.setState({ loading: true });
-    Axios('http://localhost:8080/api/cribs', {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }).then(res => {
+    Axios.get('http://localhost:8080/api/cribs').then(res => {
       if (res && res.data.length) {
         this.setState({
           loading: false,
@@ -40,12 +35,10 @@ class App extends Component {
           items: res
         })
       }
-
+    }).catch(err => {
+      this.setState({ loading: false });
+      Toast("error", "Something Went Wrong");
     })
-      .catch(err => {
-        this.setState({ loading: false });
-        Toast("error", "Something Went Wrong");
-      })
   }
 
   addItemToState = (item, isLoading) => {
@@ -55,7 +48,7 @@ class App extends Component {
     })
   }
 
-  updateState = (item,isLoading) => {
+  updateState = (item, isLoading) => {
     const itemIndex = this.state.items.findIndex(data => data.id === item.id);
     const newArray = [
       ...this.state.items.slice(0, itemIndex), item,
