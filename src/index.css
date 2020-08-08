@@ -25,7 +25,7 @@ table th, table td {
 }
 
 .cursor-pointer {
-  cursor: "pointer"
+  cursor: pointer !important;
 }
 
 .outline-none {

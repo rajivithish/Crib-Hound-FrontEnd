@@ -113,7 +113,6 @@ class App extends Component {
     </Container>;
     return (
       <Fragment>
-        
         {loading ? <LoadingSpinner /> : ResultsTable}
       </Fragment>
     )
