@@ -15,27 +15,38 @@ class UpsertCribForm extends Component {
             errors: {},
             loading: false,
         };
-        this.submitFormEdit = this.submitFormEdit.bind(this);
-        this.submitFormAdd = this.submitFormAdd.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.upsertForm = this.upsertForm.bind(this);
     }
 
     onChange = e => {
-        this.setState({ [e.target.name]: e.target.value })
+        this.setState({ [e.target.name]: e.target.value });
     }
 
-    submitFormAdd = (e) => {
+    upsertForm = (type, e) => {
         e.preventDefault();
+        let apiMethod;
+        let payload = {
+            img: this.state.img,
+            name: this.state.name,
+            location: this.state.location,
+        };
         this.setState({ loading: true });
         if (this.validateForm()) {
-            Axios.post('http://localhost:8080/api/cribs', {
-                img: this.state.img,
-                name: this.state.name,
-                location: this.state.location,
-            }).then(res => {
+            if (type === 'Add') {
+                apiMethod = Axios.post('http://localhost:8080/api/cribs', payload);
+            } else if (type === 'Update') {
+                apiMethod = Axios.put(`http://localhost:8080/api/cribs/${this.state.id}`, payload);
+            }
+            apiMethod.then(res => {
                 if (Object.keys(res.data).length) {
-                    Toast('success', 'Added');
-                    this.props.addItemToState(res.data, false)
+                    if (type === 'Add') {
+                        Toast('success', 'Added');
+                        this.props.addItemToState(res.data, false)
+                    } else {
+                        Toast('success', 'Updated');
+                        this.props.updateState(res.data, false);
+                    }
                     this.props.toggle();
                     this.setState({ loading: false });
                 } else {
@@ -46,33 +57,7 @@ class UpsertCribForm extends Component {
                 Toast('error', 'Something Went Wrong');
             })
         } else {
-            this.setState({ loading: false })
-        }
-    }
-
-    submitFormEdit = e => {
-        e.preventDefault();
-        this.setState({ loading: true });
-        if (this.validateForm()) {
-            Axios.put(`http://localhost:8080/api/cribs/${this.state.id}`, {
-                img: this.state.img,
-                name: this.state.name,
-                location: this.state.location,
-            }).then(res => {
-                if (Object.keys(res.data).length) {
-                    Toast('success', 'Updated');
-                    this.props.updateState(res.data, false);
-                    this.props.toggle();
-                    this.setState({ loading: false });
-                } else {
-                    this.setState({ loading: false });
-                }
-            }).catch(err => {
-                this.setState({ loading: false });
-                Toast('error', 'Something Went Wrong');
-            })
-        } else {
-            this.setState({ loading: false })
+            this.setState({ loading: false });
         }
     }
 
@@ -123,8 +108,7 @@ class UpsertCribForm extends Component {
     }
 
     componentWillUnmount() {
-        this.submitFormEdit.bind(this);
-        this.submitFormAdd.bind(this);
+        this.upsertForm = this.upsertForm.bind(this);
         this.onChange.bind(this);
     }
 
@@ -132,7 +116,7 @@ class UpsertCribForm extends Component {
         const { loading } = this.state;
         return (
             <Fragment>
-                <Form onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}>
+                <Form onSubmit={this.upsertForm.bind(this, this.props.mode)}>
                     <FormGroup>
                         <Label for="imgUrl">Image Url</Label>
                         <Input type="text" name="img" id="imgUrl" onChange={this.onChange} value={this.state.img || ''} />
