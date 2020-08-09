@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import CribListTable from './Components/Table/CribListTable';
-// import NavBar from './Components/NavBar/NavBar';
 import Toast from "./Components/Toast/Toast";
 import { Container, Row, Col, Navbar } from 'reactstrap';
 import LoadingSpinner from './Components/Loader/Loader';
@@ -24,15 +23,17 @@ class App extends Component {
     this.setState({ loading: true });
     Axios.get('http://localhost:8080/api/cribs').then(res => {
       if (res && res.data.length) {
+        debugger;
         this.setState({
           loading: false,
           items: [...res.data]
-        })
+        });
       }
       else {
+        debugger;
         this.setState({
           loading: false,
-          items: res
+          items: res.data
         })
       }
     }).catch(err => {
@@ -42,10 +43,19 @@ class App extends Component {
   }
 
   addItemToState = (item, isLoading) => {
-    this.setState({
-      items: [...this.state.items, item],
-      loading: isLoading
-    })
+    debugger
+    if (this.state.items.length) {
+      this.setState({
+        items: [...this.state.items, item],
+        loading: isLoading
+      })
+    } else {
+      this.setState({
+        items: [item],
+        loading: isLoading
+      })
+    }
+
   }
 
   updateState = (item, isLoading) => {
