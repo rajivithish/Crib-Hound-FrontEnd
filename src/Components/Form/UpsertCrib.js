@@ -83,6 +83,7 @@ class UpsertCribForm extends Component {
                     this.setState({ loading: false });
                 }
             }).catch(err => {
+                this.props.toggle();
                 this.setState({ loading: false })
                 Toast('error', 'Something Went Wrong');
             })
