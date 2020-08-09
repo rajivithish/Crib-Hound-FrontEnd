@@ -20,6 +20,36 @@ class UpsertCribForm extends Component {
     }
 
     onChange = e => {
+        const value = e.target.name;
+        if (e.target.value) {
+            if (value === 'name') {
+                this.setState({
+                    errors: {
+                        name: '',
+                        img: this.state.errors.img,
+                        location: this.state.errors.location
+                    }
+                })
+            }
+            else if (value === 'img') {
+                this.setState({
+                    errors: {
+                        name: this.state.errors.name,
+                        img: '',
+                        location: this.state.errors.location
+                    }
+                })
+            }
+            else if (value === 'location') {
+                this.setState({
+                    errors: {
+                        name: this.state.errors.name,
+                        img: this.state.errors.img,
+                        location: ''
+                    }
+                })
+            }
+        }
         this.setState({ [e.target.name]: e.target.value });
     }
 

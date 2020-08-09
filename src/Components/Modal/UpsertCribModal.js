@@ -3,7 +3,6 @@ import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import UpsertCribForm from '../Form/UpsertCrib'
 import { ToastContainer } from 'react-toastify';
 import { MdModeEdit } from "react-icons/md";
-import Tippy from '@tippy.js/react';
 import { Tooltip } from 'react-tippy';
 
 class UpsertCribModal extends Component {

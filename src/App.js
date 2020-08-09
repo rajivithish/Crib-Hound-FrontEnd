@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import CribListTable from './Components/Table/CribListTable';
 import Toast from "./Components/Toast/Toast";
-import { Container, Row, Col, Navbar } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import LoadingSpinner from './Components/Loader/Loader';
 import Axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
