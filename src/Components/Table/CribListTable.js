@@ -29,8 +29,6 @@ class CribListTable extends Component {
             id: null,
             loading: false,
         };
-        this.imageRef = React.createRef();
-
         this.toggle = this.toggle.bind(this);
         this.searchSpace = this.searchSpace.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
@@ -88,7 +86,6 @@ class CribListTable extends Component {
                         <td>
                             <img
                                 src={item.img}
-                                ref={this.imageRef}
                                 className="rounded-circle"
                                 onError={(e) => { e.target.onerror = null; e.target.src = "default-thumbnail.jpg" }}
                                 alt=''
