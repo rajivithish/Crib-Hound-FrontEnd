@@ -23,14 +23,12 @@ class App extends Component {
     this.setState({ loading: true });
     Axios.get('http://localhost:8080/api/cribs').then(res => {
       if (res && res.data.length) {
-        debugger;
         this.setState({
           loading: false,
           items: [...res.data]
         });
       }
       else {
-        debugger;
         this.setState({
           loading: false,
           items: res.data
@@ -43,7 +41,6 @@ class App extends Component {
   }
 
   addItemToState = (item, isLoading) => {
-    debugger
     if (this.state.items.length) {
       this.setState({
         items: [...this.state.items, item],
