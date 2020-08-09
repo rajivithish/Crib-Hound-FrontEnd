@@ -1,6 +1,6 @@
 1. Run the Crib-hound-Backend Project First.
 
-2. Make sure, backend server is running, to test run this url(http://localhost:8080/) in browser ,it show will show the following message ("message":"Welcome to        cribs application."}).
+2. Then Make sure, backend server is running, to test run this url(http://localhost:8080/) in browser ,it show will show the following message ("message":"Welcome      to cribs application."}).
 
 3. Open the Project,initialize node modules by using the command 'npm install'.
 
