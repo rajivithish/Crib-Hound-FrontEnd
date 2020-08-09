@@ -34,7 +34,6 @@ class CribListTable extends Component {
         this.toggle = this.toggle.bind(this);
         this.searchSpace = this.searchSpace.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
-        this.imageErrorHandler = this.imageErrorHandler.bind(this);
     }
 
     toggle = (id) => {
@@ -48,10 +47,6 @@ class CribListTable extends Component {
         let keyword = event.target.value;
         this.setState({ search: keyword });
     };
-
-    imageErrorHandler = () => {
-        this.imageRef.current.src = 'default-thumbnail.jpg'
-    }
 
     deleteItem = (id) => {
         this.setState({ loading: true });
@@ -95,7 +90,7 @@ class CribListTable extends Component {
                                 src={item.img}
                                 ref={this.imageRef}
                                 className="rounded-circle"
-                                onError={this.imageErrorHandler}
+                                onError={(e) => { e.target.onerror = null; e.target.src = "default-thumbnail.jpg" }}
                                 alt=''
                                 height="50"
                                 width="50"
